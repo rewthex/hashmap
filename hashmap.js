@@ -1,14 +1,10 @@
-class Node {
-	constructor(value) {
-		this.value = value || null;
-		this.nextNode = null;
-	}
-}
+import { Node, LinkedList } from './linkedlist.js';
 
 class HashMap {
-	constructor(length = 16) {
-		this.length = length;
-		this.buckets = Array.from({ length }, () => []);
+	constructor(capacity = 16, loadfactor = 0.75) {
+		this.capacity = capacity;
+		this.loadFactor = loadfactor;
+		this.buckets = [];
 	}
 
 	hash(key) {
@@ -16,7 +12,7 @@ class HashMap {
 		let i = 0;
 		for (i = 0; i < key.length; i++) {
 			const ascii = key.charCodeAt(i);
-			h = ((h << 3) ^ h ^ ascii) % this.length;
+			h = ((h << 3) ^ h ^ ascii) % this.capacity;
 		}
 		return h & 0xffffffffff;
 	}
@@ -24,54 +20,36 @@ class HashMap {
 	set(key, value) {
 		let index = this.hash(key);
 		let bucket = this.buckets[index];
-		let existingKeyIndex = bucket.findIndex((entry) => entry[0] === key);
-		if (existingKeyIndex === -1) {
-			bucket.push([key, value]);
+		if (bucket) {
+			let existingKeyIndex = bucket.find(key);
+			if (existingKeyIndex !== -1) {
+				bucket.replace(value, existingKeyIndex);
+			} else {
+				bucket.append(key, value);
+			}
 		} else {
-			bucket[existingKeyIndex] = [key, value];
+			let linkedList = new LinkedList();
+			linkedList.append(key, value);
+			this.buckets[index] = linkedList;
 		}
 	}
 
-	get(key) {
-		let index = this.hash(key);
-		let bucket = this.buckets[index];
-		let existingKeyIndex = bucket.findIndex((entry) => entry[0] === key);
+	get(key) {}
 
-		if (existingKeyIndex === -1) {
-			return null;
-		} else {
-			return bucket[existingKeyIndex][1];
+	has(key) {}
+
+	remove(key) {}
+
+	length() {
+		let length = 0;
+		for (let bucket of Object.values(this.buckets)) {
+			length += bucket.size();
 		}
+		return length;
 	}
-
-  has(key) {
-    let index = this.hash(key);
-    let bucket = this.buckets[index]
-		let existingKeyIndex = bucket.findIndex((entry) => entry[0] === key);
-    
-    if (existingKeyIndex === -1) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  remove(key) {
-    let index = this.hash(key);
-    let bucket = this.buckets[index]
-		let existingKeyIndex = bucket.findIndex((entry) => entry[0] === key);
-
-    if (existingKeyIndex === -1) {
-      return false;
-    } else {
-      bucket.splice(existingKeyIndex, 1)
-      return true;
-    }
-  }
 }
 
-const hash = new HashMap(16);
+const hash = new HashMap();
 hash.set('Aaron', 'Potatoes');
-console.log(hash.has('Aaron'))
-console.log(hash.remove('Aaron'))
-console.log(hash.has('Aaron'))
+hash.set('Jerry', 'Potatoes');
+hash.set('Jeffrey', 'Potatoes');
