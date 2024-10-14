@@ -40,12 +40,12 @@ class HashMap {
 		if (existingKeyIndex === -1) {
 			return null;
 		} else {
-			return bucket[existingKeyIndex];
+			return bucket[existingKeyIndex][1];
 		}
 	}
 }
 
 const hash = new HashMap(16);
 hash.set('Aaron', 'Potatoes');
-hash.set('Aaron', 'Corn-flakes')
+
 console.log(hash.get('Aaron'))
