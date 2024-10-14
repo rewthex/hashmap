@@ -43,9 +43,21 @@ class HashMap {
 			return bucket[existingKeyIndex][1];
 		}
 	}
+
+  has(key) {
+    let index = this.hash(key);
+    let bucket = this.buckets[index]
+		let existingKeyIndex = bucket.findIndex((entry) => entry[0] === key);
+    
+    if (existingKeyIndex === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 const hash = new HashMap(16);
 hash.set('Aaron', 'Potatoes');
 
-console.log(hash.get('Aaron'))
+console.log(hash.has('asdasd'))
