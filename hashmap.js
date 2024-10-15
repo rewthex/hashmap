@@ -1,9 +1,9 @@
 import { Node, LinkedList } from './linkedlist.js';
 
 class HashMap {
-	constructor(capacity = 16, loadfactor = 0.75) {
+	constructor(capacity = 16, loadFactor = 0.75) {
 		this.capacity = capacity;
-		this.loadFactor = loadfactor;
+		this.loadFactor = loadFactor;
 		this.buckets = [];
 	}
 
@@ -22,10 +22,10 @@ class HashMap {
 		let bucket = this.buckets[index];
 		if (bucket) {
 			let existingKeyIndex = bucket.find(key);
-			if (existingKeyIndex !== -1) {
-				bucket.replace(value, existingKeyIndex);
-			} else {
+			if (existingKeyIndex === null) {
 				bucket.append(key, value);
+			} else {
+				bucket.replace(value, existingKeyIndex);
 			}
 		} else {
 			let linkedList = new LinkedList();
@@ -49,7 +49,25 @@ class HashMap {
 	}
 }
 
-const hash = new HashMap();
-hash.set('Aaron', 'Potatoes');
-hash.set('Jerry', 'Potatoes');
-hash.set('Jeffrey', 'Potatoes');
+const test = new HashMap()
+
+test.set('apple', 'red')
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+test.set('lioaasn', 'golden')
+test.set('lioxn', 'golden')
+test.set('lawion', 'golden')
+test.set('lioncc', 'golden')
+test.set('liong', 'golden')
+test.set('lioern', 'golden')
+
+console.log(test.length());
