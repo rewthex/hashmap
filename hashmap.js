@@ -1,4 +1,4 @@
-import { Node, LinkedList } from './linkedlist.js';
+import { LinkedList } from './linkedlist.js';
 
 class HashMap {
 	constructor(capacity = 16, loadFactor = 0.75) {
@@ -9,8 +9,7 @@ class HashMap {
 
 	hash(key) {
 		let h = 5381;
-		let i = 0;
-		for (i = 0; i < key.length; i++) {
+		for (let i = 0; i < key.length; i++) {
 			const ascii = key.charCodeAt(i);
 			h = ((h << 3) ^ h ^ ascii) % this.capacity;
 		}
@@ -27,8 +26,6 @@ class HashMap {
 				currentNode = currentNode.nextNode;
 			}
 		}
-
-		console.log(entries);
 
 		this.buckets = [];
 
@@ -61,9 +58,19 @@ class HashMap {
 		}
 	}
 
-	get(key) {}
+	get(key) {
+		let index = this.hash(key);
+		let bucket = this.buckets[index];
+		if (!bucket) return null;
+		return bucket.find(key);
+	}
 
-	has(key) {}
+	has(key) {
+		let index = this.hash(key);
+		let bucket = this.buckets[index];
+		if (!bucket) return false;
+		return bucket.contains(key);
+	}
 
 	remove(key) {}
 
@@ -82,15 +89,6 @@ test.set('apple', 'red');
 test.set('banana', 'yellow');
 test.set('carrot', 'orange');
 test.set('dog', 'brown');
-test.set('elephant', 'gray');
-test.set('frog', 'green');
-test.set('grape', 'purple');
-test.set('hat', 'black');
-test.set('icecream', 'white');
-test.set('jacket', 'blue');
-test.set('kite', 'pink');
-test.set('lion', 'golden');
-test.set('lison', 'golden');
-test.set('lisonsd', 'golden');
-test.set('grapsse', 'purple');
-test.set('graqwqwpe', 'purple');
+test.set('apple', 'blue');
+
+console.log(test.has('applssse'));

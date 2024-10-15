@@ -60,12 +60,26 @@ export class LinkedList {
 		let index = 0;
 		let currentNode = this.head;
 		while (currentNode) {
-			if (currentNode.key === key) return index;
+			if (currentNode.key === key) return currentNode.value;
 			currentNode = currentNode.nextNode;
 			index += 1;
 		}
 
 		return null;
+	}
+
+	contains(key) {
+		if (!this.head) return false;
+
+		let index = 0;
+		let currentNode = this.head;
+		while (currentNode) {
+			if (currentNode.key === key) return true;
+			currentNode = currentNode.nextNode;
+			index += 1;
+		}
+
+		return false;
 	}
 
 	replace(value, index) {
@@ -74,13 +88,4 @@ export class LinkedList {
 		return;
 	}
 
-	getAllEntries() {
-		let entries = {};
-		let currentNode = this.head;
-		while (currentNode) {
-			entries[currentNode.key] = currentNode.value;
-			currentNode = currentNode.nextNode;
-		}
-		return entries;
-	}
 }
