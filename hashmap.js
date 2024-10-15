@@ -72,7 +72,32 @@ class HashMap {
 		return bucket.contains(key);
 	}
 
-	remove(key) {}
+	remove(key) {
+		let index = this.hash(key);
+		let bucket = this.buckets[index];
+
+		if (!bucket || !bucket.contains(key)) return false;
+
+		if (bucket.head.key === key && bucket.head.nextNode) {
+			bucket.head = bucket.head.nextNode;
+			return true;
+		} else if (bucket.head.key === key) {
+			this.buckets[index] = undefined;
+			return true;
+		}
+
+		let currentNode = bucket.head;
+		let nextNode = currentNode.nextNode;
+
+		while (nextNode) {
+			if (nextNode.key === key) {
+				currentNode.nextNode = nextNode.nextNode || null;
+				return true;
+			}
+			currentNode = nextNode;
+			nextNode = nextNode.nextNode;
+		}
+	}
 
 	length() {
 		let length = 0;
@@ -80,6 +105,46 @@ class HashMap {
 			length += bucket.size();
 		}
 		return length;
+	}
+
+	clear() {
+		this.buckets = [];
+	}
+
+	keys() {
+		let keys = [];
+		for (let bucket of Object.values(this.buckets)) {
+			let currentNode = bucket.head;
+			while (currentNode) {
+				keys.push(currentNode.key);
+				currentNode = currentNode.nextNode;
+			}
+		}
+		return keys;
+	}
+
+	values() {
+		let values = [];
+		for (let bucket of Object.values(this.buckets)) {
+			let currentNode = bucket.head;
+			while (currentNode) {
+				values.push(currentNode.value);
+				currentNode = currentNode.nextNode;
+			}
+		}
+		return values;
+	}
+
+	entries() {
+		let entries = [];
+		for (let bucket of Object.values(this.buckets)) {
+			let currentNode = bucket.head;
+			while (currentNode) {
+				entries.push([currentNode.key, currentNode.value]);
+				currentNode = currentNode.nextNode;
+			}
+		}
+		return entries;
 	}
 }
 
@@ -91,4 +156,4 @@ test.set('carrot', 'orange');
 test.set('dog', 'brown');
 test.set('apple', 'blue');
 
-console.log(test.has('applssse'));
+console.log(test.entries());
