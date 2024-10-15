@@ -17,7 +17,34 @@ class HashMap {
 		return h & 0xffffffffff;
 	}
 
+	rehash() {
+		let entries = {};
+
+		for (let bucket of Object.values(this.buckets)) {
+			let currentNode = bucket.head;
+			while (currentNode) {
+				entries[currentNode.key] = currentNode.value;
+				currentNode = currentNode.nextNode;
+			}
+		}
+
+		console.log(entries);
+
+		this.buckets = [];
+
+		for (let key in entries) {
+			this.set(key, entries[key]);
+		}
+
+		return;
+	}
+
 	set(key, value) {
+		if (this.length() > this.capacity * this.loadFactor) {
+			this.capacity = this.capacity * 2;
+			this.rehash();
+		}
+
 		let index = this.hash(key);
 		let bucket = this.buckets[index];
 		if (bucket) {
@@ -49,25 +76,21 @@ class HashMap {
 	}
 }
 
-const test = new HashMap()
+const test = new HashMap();
 
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('lioaasn', 'golden')
-test.set('lioxn', 'golden')
-test.set('lawion', 'golden')
-test.set('lioncc', 'golden')
-test.set('liong', 'golden')
-test.set('lioern', 'golden')
-
-console.log(test.length());
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('icecream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+test.set('lison', 'golden');
+test.set('lisonsd', 'golden');
+test.set('grapsse', 'purple');
+test.set('graqwqwpe', 'purple');
