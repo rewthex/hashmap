@@ -1,6 +1,6 @@
 import { LinkedList } from './linkedlist.js';
 
-class HashMap {
+export class HashMap {
 	constructor(capacity = 16, loadFactor = 0.75) {
 		this.capacity = capacity;
 		this.loadFactor = loadFactor;
@@ -17,27 +17,19 @@ class HashMap {
 	}
 
 	rehash() {
-		let entries = {};
-
-		for (let bucket of Object.values(this.buckets)) {
-			let currentNode = bucket.head;
-			while (currentNode) {
-				entries[currentNode.key] = currentNode.value;
-				currentNode = currentNode.nextNode;
-			}
-		}
+		let entries = this.entries();
 
 		this.buckets = [];
 
-		for (let key in entries) {
-			this.set(key, entries[key]);
+		for (let index in entries) {
+			this.set(entries[index][0], entries[index][1]);
 		}
 
 		return;
 	}
 
 	set(key, value) {
-		if (this.length() > this.capacity * this.loadFactor) {
+		if (this.exceedsLoadFactor()) {
 			this.capacity = this.capacity * 2;
 			this.rehash();
 		}
@@ -99,6 +91,10 @@ class HashMap {
 		}
 	}
 
+	exceedsLoadFactor() {
+		return (this.length() > this.capacity * this.loadFactor);
+	}
+
 	length() {
 		let length = 0;
 		for (let bucket of Object.values(this.buckets)) {
@@ -147,13 +143,3 @@ class HashMap {
 		return entries;
 	}
 }
-
-const test = new HashMap();
-
-test.set('apple', 'red');
-test.set('banana', 'yellow');
-test.set('carrot', 'orange');
-test.set('dog', 'brown');
-test.set('apple', 'blue');
-
-console.log(test.entries());
